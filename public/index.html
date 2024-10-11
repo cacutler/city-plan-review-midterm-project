@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>City Plan Review</title>
+    </head>
+    <body>
+        <div id="app">
+            <h1>City Plan Review</h1>
+            <button v-on:click="showStandards" class="standards">City Standards</button>
+            <button v-on:click="showPlans" class="plans">Developer Plans</button>
+            <div id="city-standards" v-if="showCityStandards">
+                <div class="row">
+                    <div class="column">
+                        <h2>Standards Updates</h2>
+                        <form ref="form" class="standard-updates">
+                            Minimum Development Size: <input type="number" placeholder="Minimum Development Size" v-model="minDevelopmentSize">
+                            <div v-bind:style="errorStyleForStandardsField('minDevelopmentSize')">
+                                {{errorMessageForStandardsField('minDevelopmentSize')}}
+                            </div>
+                            Maximum Development Size: <input type="number" placeholder="Maximum Development Size" v-model="maxDevelopmentSize">
+                            <div v-bind:style="errorStyleForStandardsField('maxDevelopmentSize')">
+                                {{errorMessageForStandardsField('maxDevelopmentSize')}}
+                            </div>
+                            Minimum Waterline Size: <input type="number" placeholder="Minimum Waterline Size" v-model="minWaterlineSize">
+                            <div v-bind:style="errorStyleForStandardsField('minWaterlineSize')">
+                                {{errorMessageForStandardsField('minWaterlineSize')}}
+                            </div>
+                            Maximum Waterline Size: <input type="number" placeholder="Maximum Waterline Size" v-model="maxWaterlineSize">
+                            <div v-bind:style="errorStyleForStandardsField('maxWaterlineSize')">
+                                {{errorMessageForStandardsField('maxWaterlineSize')}}
+                            </div>
+                            Minimum Sewer Size: <input type="number" placeholder="Minimum Sewer Size" v-model="minSewerSize">
+                            <div v-bind:style="errorStyleForStandardsField('minSewerSize')">
+                                {{errorMessageForStandardsField('minSewerSize')}}
+                            </div>
+                            Maximum Sewer Size: <input type="number" placeholder="Maximum Sewer Size" v-model="maxSewerSize">
+                            <div v-bind:style="errorStyleForStandardsField('maxSewerSize')">
+                                {{errorMessageForStandardsField('maxSewerSize')}}
+                            </div>
+                            Minimum Storm Drain Size: <input type="number" placeholder="Minimum Storm Drain Size" v-model="minStormDrainSize">
+                            <div v-bind:style="errorStyleForStandardsField('minStormDrainSize')">
+                                {{errorMessageForStandardsField('minStormDrainSize')}}
+                            </div>
+                            Maximum Storm Drain Size: <input type="number" placeholder="Maximum Storm Drain Size" v-model="maxStormDrainSize">
+                            <div v-bind:style="errorStyleForStandardsField('maxStormDrainSize')">
+                                {{errorMessageForStandardsField('maxStormDrainSize')}}
+                            </div>
+                            Minimum Roadway Width: <input type="number" placeholder="Minimum Roadway Width" v-model="minRoadwayWidth">
+                            <div v-bind:style="errorStyleForStandardsField('minRoadwayWidth')">
+                                {{errorMessageForStandardsField('minRoadwayWidth')}}
+                            </div>
+                            Maximum Roadway Width: <input type="number" placeholder="Maximum Roadway Width" v-model="maxRoadwayWidth">
+                            <div v-bind:style="errorStyleForStandardsField('maxRoadwayWidth')">
+                                {{errorMessageForStandardsField('maxRoadwayWidth')}}
+                            </div>
+                            Minimum Asphalt Width: <input type="number" placeholder="Minimum Asphalt Width" v-model="minAsphaltWidth">
+                            <div v-bind:style="errorStyleForStandardsField('minAsphaltWidth')">
+                                {{errorMessageForStandardsField('minAsphaltWidth')}}
+                            </div>
+                            Maximum Asphalt Width: <input type="number" placeholder="Maximum Asphalt Width" v-model="maxAsphaltWidth">
+                            <div v-bind:style="errorStyleForStandardsField('maxAsphaltWidth')">
+                                {{errorMessageForStandardsField('maxAsphaltWidth')}}
+                            </div>
+                            Minimum Sidewalk Width: <input type="number" placeholder="Minimum Sidewalk Width" v-model="minSidewalkWidth">
+                            <div v-bind:style="errorStyleForStandardsField('minSidewalkWidth')">
+                                {{errorMessageForStandardsField('minSidewalkWidth')}}
+                            </div>
+                            Maximum Sidewalk Width: <input type="number" placeholder="Maximum Sidewalk Width" v-model="maxSidewalkWidth">
+                            <div v-bind:style="errorStyleForStandardsField('maxSidewalkWidth')">
+                                {{errorMessageForStandardsField('maxSidewalkWidth')}}
+                            </div>
+                            Minimum Asphalt Thickness: <input type="number" placeholder="Minimum Asphalt Thickness" v-model="minAsphaltThickness">
+                            <div v-bind:style="errorStyleForStandardsField('minAsphaltThickness')">
+                                {{errorMessageForStandardsField('minAsphaltThickness')}}
+                            </div>
+                            Maximum Asphalt Thickness: <input type="number" placeholder="Maximum Asphalt Thickness" v-model="maxAsphaltThickness">
+                            <div v-bind:style="errorStyleForStandardsField('maxAsphaltThickness')">
+                                {{errorMessageForStandardsField('maxAsphaltThickness')}}
+                            </div>
+                            Minimum Roadbase Thickness: <input type="number" placeholder="Minimum Roadbase Thickness" v-model="minRoadbaseThickness">
+                            <div v-bind:style="errorStyleForStandardsField('minRoadbaseThickness')">
+                                {{errorMessageForStandardsField('minRoadbaseThickness')}}
+                            </div>
+                            Maximum Roadbase Thickness: <input type="number" placeholder="Maximum Roadbase Thickness" v-model="maxRoadbaseThickness">
+                            <div v-bind:style="errorStyleForStandardsField('maxRoadbaseThickness')">
+                                {{errorMessageForStandardsField('maxRoadbaseThickness')}}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="column">
+                        <h2>Current Standards</h2>
+                        <ul v-for="standards in cityStandards">
+                            <li>
+                                <button v-on:click="editStandards(standards._id)" class="edit">Edit Standards</button>
+                                <button v-on:click="updateStandards(standards._id)" class="update">Update Standards</button>
+                                <br>
+                                Development Size: Between {{standards.min_development_size}} and {{standards.max_development_size}}
+                                <br>
+                                Waterline Size: Between {{standards.min_waterline_size}} and {{standards.max_waterline_size}}
+                                <br>
+                                Sewer Size: Between {{standards.min_sewer_size}} and {{standards.max_sewer_size}}
+                                <br>
+                                Storm Drain Size: Between {{standards.min_storm_drain_size}} and {{standards.max_storm_drain_size}}
+                                <br>
+                                Roadway Width: Between {{standards.min_roadway_width}} and {{standards.max_roadway_width}}
+                                <br>
+                                Asphalt Width: Between {{standards.min_asphalt_width}} and {{standards.max_asphalt_width}}
+                                <br>
+                                Sidewalk Width: Between {{standards.min_sidewalk_width}} and {{standards.max_sidewalk_width}}
+                                <br>
+                                Asphalt Thickness: Between {{standards.min_asphalt_thickness}} and {{standards.max_asphalt_thickness}}
+                                <br>
+                                Roadbase Thickness: Between {{standards.min_roadbase_thickness}} and {{standards.max_roadbase_thickness}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="developer-plans" v-if="showDeveloperPlans">
+                <div class="row">
+                    <div class="column">
+                        <h2>New Plan</h2>
+                        <div>
+                            <button type="button" v-on:click="addPlan" class="add">Add Plan</button>
+                        </div>
+                        <form ref="form" class="plans-form">
+                            Applicant's Name: <input type="text" placeholder="Enter Applicant's Name" v-model="applicantName">
+                            <div v-bind:style="errorStyleForPlanField('applicantName')">
+                                {{errorMessageForPlanField('applicantName')}}
+                            </div>
+                            Applicant's Phone Number: <input type="tel" placeholder="Enter Applicant's Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" v-model="applicantPhone">
+                            <div v-bind:style="errorStyleForPlanField('applicantPhone')">
+                                {{errorMessageForPlanField('applicantPhone')}}
+                            </div>
+                            Applicant's Email: <input type="email" placeholder="Enter Applicant's Email" v-model="applicantEmail">
+                            <div v-bind:style="errorStyleForPlanField('applicantEmail')">
+                                {{errorMessageForPlanField('applicantEmail')}}
+                            </div>
+                            Applicant's Address: <input type="text" placeholder="Enter Applicant's Address" v-model="applicantAddress">
+                            <div v-bind:style="errorStyleForPlanField('applicantAddress')">
+                                {{errorMessageForPlanField('applicantAddress')}}
+                            </div>
+                            Developer's Name: <input type="text" placeholder="Enter Developer's Name" v-model="developerName">
+                            <div v-bind:style="errorStyleForPlanField('developerName')">
+                                {{errorMessageForPlanField('developerName')}}
+                            </div>
+                            Developer's Phone Number: <input type="tel" placeholder="Enter Developer's Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" v-model="developerPhone">
+                            <div v-bind:style="errorStyleForPlanField('developerPhone')">
+                                {{errorMessageForPlanField('developerPhone')}}
+                            </div>
+                            Developer's Email: <input type="email" placeholder="Enter Developer's Email" v-model="developerEmail">
+                            <div v-bind:style="errorStyleForPlanField('developerEmail')">
+                                {{errorMessageForPlanField('developerEmail')}}
+                            </div>
+                            Developer's Address: <input type="text" placeholder="Enter Developer's Address" v-model="developerAddress">
+                            <div v-bind:style="errorStyleForPlanField('developerAddress')">
+                                {{errorMessageForPlanField('developerAddress')}}
+                            </div>
+                            Project Name: <input type="text" placeholder="Enter Project Name" v-model="projectName">
+                            <div v-bind:style="errorStyleForPlanField('projectName')">
+                                {{errorMessageForPlanField('projectName')}}
+                            </div>
+                            Project Site Address: <input type="text" placeholder="Enter Project Site Address" v-model="projectAddress">
+                            <div v-bind:style="errorStyleForPlanField('projectAddress')">
+                                {{errorMessageForPlanField('projectAddress')}}
+                            </div>
+                            <label for="project-types">Type of Project:</label>
+                            <select id="project-types" name="project-types" v-model="projectType">
+                                <optgroup label="Project Types">
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Multifamily">Multifamily</option>
+                                </optgroup>
+                            </select>
+                            <div v-bind:style="errorStyleForPlanField('projectType')">
+                                {{errorMessageForPlanField('projectType')}}
+                            </div>
+                            <label for="current-zoning">Current Zoning:</label>
+                            <select name="current-zoning" id="current-zoning" v-model="currentZoning">
+                                <optgroup label="Current Zoning">
+                                    <option value="R1-8">R1-8</option>
+                                    <option value="R1-10">R1-10</option>
+                                    <option value="RE-12.5">RE-12.5</option>
+                                    <option value="RE-20"> RE-20</option>
+                                    <option value="PDR">PDR</option>
+                                    <option value="C1">C1</option>
+                                    <option value="C2">C2</option>
+                                    <option value="C3">C3</option>
+                                    <option value="PDC">PDC</option>
+                                    <option value="R-2">R-2</option>
+                                    <option value="R-3">R-3</option>
+                                    <option value="R-4">R-4</option>
+                                </optgroup>
+                            </select>
+                            <div v-bind:style="errorStyleForPlanField('currentZoning')">
+                                {{errorMessageForPlanField('currentZoning')}}
+                            </div>
+                            Development Size: <input type="number" placeholder="Enter Development Size" v-model="developmentSize">
+                            <div v-bind:style="errorStyleForPlanField('developmentSize')">
+                                {{errorMessageForPlanField('developmentSize')}}
+                            </div>
+                            Waterline Size: <input type="number" placeholder="Enter Waterline Size" v-model="waterlineSize">
+                            <div v-bind:style="errorStyleForPlanField('waterlineSize')">
+                                {{errorMessageForPlanField('waterlineSize')}}
+                            </div>
+                            Sewer Size: <input type="number" placeholder="Enter Sewer Size" v-model="sewerSize">
+                            <div v-bind:style="errorStyleForPlanField('sewerSize')">
+                                {{errorMessageForPlanField('sewerSize')}}
+                            </div>
+                            Storm Drain Size: <input type="number" placeholder="Enter Storm Drain Size" v-model="stormDrainSize">
+                            <div v-bind:style="errorStyleForPlanField('stormDrainSize')">
+                                {{errorMessageForPlanField('stormDrainSize')}}
+                            </div>
+                            <label for="power">Power Company:</label>
+                            <select name="power" id="power" v-model="powerCompany">
+                                <optgroup label="Power Company">
+                                    <option value="SGES">SGES</option>
+                                    <option value="Dixie Power">Dixie Power</option>
+                                </optgroup>
+                            </select>
+                            <div v-bind:style="errorStyleForPlanField('powerCompany')">
+                                {{errorMessageForPlanField('powerCompany')}}
+                            </div>
+                            <label for="fiber">Internet Company:</label>
+                            <select name="fiber" id="fiber" v-model="internetCompany">
+                                <optgroup label="Internet Company">
+                                    <option value="Lumen">Lumen</option>
+                                    <option value="TDS">TDS</option>
+                                    <option value="Infowest">Infowest</option>
+                                    <option value="Other">Other</option>
+                                </optgroup>
+                            </select>
+                            <div v-bind:style="errorStyleForPlanField('internetCompany')">
+                                {{errorMessageForPlanField('internetCompany')}}
+                            </div>
+                            Proposed Roadway Width: <input type="number" placeholder="Enter Proposed Roadway Width" v-model="proposedRoadwayWidth">
+                            <div v-bind:style="errorStyleForPlanField('proposedRoadwayWidth')">
+                                {{errorMessageForPlanField('proposedRoadwayWidth')}}
+                            </div>
+                            Proposed Asphalt Width: <input type="number" placeholder="Enter Proposed Asphalt Width" v-model="proposedAsphaltWidth">
+                            <div v-bind:style="errorStyleForPlanField('proposedAsphaltWidth')">
+                                {{errorMessageForPlanField('proposedAsphaltWidth')}}
+                            </div>
+                            Proposed Sidewalk Width: <input type="number" placeholder="Enter Proposed Sidewalk Width" v-model="proposedSidewalkWidth">
+                            <div v-bind:style="errorStyleForPlanField('proposedSidewalkWidth')">
+                                {{errorMessageForPlanField('proposedSidewalkWidth')}}
+                            </div>
+                            Asphalt Thickness: <input type="number" placeholder="Enter Asphalt Thickness" v-model="asphaltThickness">
+                            <div v-bind:style="errorStyleForPlanField('asphaltThickness')">
+                                {{errorMessageForPlanField('asphaltThickness')}}
+                            </div>
+                            Roadbase Thickness: <input type="number" placeholder="Enter Roadbase Thickness" v-model="roadbaseThickness">
+                            <div v-bind:style="errorStyleForPlanField('roadbaseThickness')">
+                                {{errorMessageForPlanField('roadbaseThickness')}}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="column">
+                        <h2>Current Plans</h2>
+                        <ul v-for="plan in plans">
+                            <li>
+                                <h3>{{plan.project_name}}</h3>
+                                <div v-if="plan.approved" class="approval">
+                                    <p>Plan is approved</p>
+                                </div>
+                                <div v-else class="disapproval">
+                                    <p>Plan needs to be updated to current standards</p>
+                                </div>
+                                <button v-on:click="editPlan(plan._id)" class="edit">Edit Plan</button>
+                                <button v-on:click="updatePlan(plan._id)" class="update">Update Plan</button>
+                                <button v-on:click="deletePlan(plan._id)" class="delete">Delete Plan</button>
+                                <h4>Type: {{plan.project_type}}</h4>
+                                <p>Project Address: {{plan.project_address}}</p>
+                                <strong>Developed by {{plan.developer_name}} for {{plan.applicant_name}}</strong>
+                                <p>Developer Contact Information: {{plan.developer_phone_number}} {{plan.developer_email}} {{plan.developer_address}}</p>
+                                <p>Applicant Contact Information: {{plan.applicant_phone_number}} {{plan.applicant_email}} {{plan.applicant_address}}</p>
+                                <p>Current project zoning is {{plan.current_zoning}}</p>
+                                <p>Project development size is {{plan.development_size}}</p>
+                                <p>Waterline Size is {{plan.waterline_size}}, sewer size is {{plan.sewer_size}}, and storm drain size is {{plan.storm_drain_size}}</p>
+                                <p>Power company will be {{plan.power_company}} and fiber company is {{plan.internet_company}}</p>
+                                <p>Proposed roadway width is {{plan.roadway_width}}, proposed asphalt width is {{plan.asphalt_width}}, proposed sidewalk width is {{plan.sidewalk_width}}, proposed asphalt thickness is {{plan.asphalt_thickness}}, and proposed roadbase thickness is {{plan.roadbase_thickness}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
+</html>

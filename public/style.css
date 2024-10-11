@@ -1,0 +1,73 @@
+.column {
+    flex: 50%;
+}
+.row {
+    display: flex;
+}
+body {
+    text-align: center;
+}
+.row input {
+    padding: 10px;
+    margin: 15px;
+    height: 10px;
+    width: 50%;
+    text-align: center;
+}
+.row select {
+    margin: 15px;
+    height: 3.5%;
+}
+ul {
+    list-style: none;
+}
+button {
+    margin: 0.5rem;
+    border-radius: 45%;
+    border-style: none;
+    padding: 0.5rem;
+    width: 150px;
+    box-shadow: 0px 1px 5px black;
+}
+.approval {
+    background-color: rgb(10, 169, 10);
+    color: white;
+}
+.disapproval {
+    background-color: red;
+    color: white;
+}
+.standards {
+    background-color: yellow;
+}
+.plans {
+    background-color: lime;
+}
+.edit {
+    background-color: orange;
+}
+.update {
+    background-color: lightsalmon;
+}
+.delete {
+    background-color: lightcoral;
+}
+.add {
+    background-color: limegreen;
+}
+body {
+    background-color: lightblue;
+}
+h1, h2 {
+    text-decoration: underline;
+}
+input, select {
+    background-color: beige;
+    border-style: none;
+}
+.standard-updates {
+    text-align: right;
+}
+.plans-form {
+    text-align: right;
+}
