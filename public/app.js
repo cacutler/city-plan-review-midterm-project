@@ -90,7 +90,7 @@ Vue.createApp({
             data += "&roadbaseThickness=" + encodeURIComponent(this.roadbaseThickness);
             data += "&approved=" + encodeURIComponent(this.approved);
             console.log("New plan being sent:", data);
-            fetch("/developer_plans", {
+            fetch("http://localhost:8080/developer_plans", {
                 method: "POST",
                 body: data,
                 headers: {
@@ -106,7 +106,7 @@ Vue.createApp({
         },
         deletePlan: function (developer_planID) {
             console.log("Plan being deleted:", developer_planID);
-            fetch("/developer_plans/" + developer_planID, {
+            fetch("http://localhost:8080/developer_plans/" + developer_planID, {
                 method: "DELETE"
             }).then((response) => {
                 console.log("Plan was deleted from server.");
@@ -115,7 +115,7 @@ Vue.createApp({
         },
         editPlan: function (developer_planID) {
             console.log("Developer plan being edited:", developer_planID);
-            fetch("/developer_plans/" + developer_planID).then((response) => {
+            fetch("http://localhost:8080/developer_plans/" + developer_planID).then((response) => {
                 if (response.status == 200) {
                     response.json().then((planFromServer) => {
                         console.log("Received single plan from server:", planFromServer);
@@ -189,7 +189,7 @@ Vue.createApp({
             data += "&roadbaseThickness=" + encodeURIComponent(this.roadbaseThickness);
             data += "&approved=" + encodeURIComponent(this.approved);
             console.log("Updated plan being sent:", data);
-            fetch("/developer_plans/" + developer_planID, {
+            fetch("http://localhost:8080/developer_plans/" + developer_planID, {
                 method: "PUT",
                 body: data,
                 headers: {
@@ -204,7 +204,7 @@ Vue.createApp({
             });
         },
         loadPlans: function () {
-            fetch("/developer_plans").then((response) => {
+            fetch("http://localhost:8080/developer_plans").then((response) => {
                 if (response.status == 200) {
                     response.json().then((plansFromServer) => {
                         console.log("Received developer plans from API:", plansFromServer);
@@ -305,7 +305,7 @@ Vue.createApp({
         },
         editStandards: function (standardsID) {
             console.log("City standards being edited:", standardsID);
-            fetch("/city_standards/" + standardsID).then((response) => {
+            fetch("http://localhost:8080/city_standards/" + standardsID).then((response) => {
                 if (response.status == 200) {
                     response.json().then((standardFromServer) => {
                         this.minDevelopmentSize = standardFromServer.min_development_size;
@@ -356,7 +356,7 @@ Vue.createApp({
             data += "&minRoadbaseThickness=" + encodeURIComponent(this.minRoadbaseThickness);
             data += "&maxRoadbaseThickness=" + encodeURIComponent(this.maxRoadbaseThickness);
             console.log("Updated standards being sent:", data);
-            fetch("/city_standards/" + standardsID, {
+            fetch("http://localhost:8080/city_standards/" + standardsID, {
                 method: "PUT",
                 body: data,
                 headers: {
@@ -371,7 +371,7 @@ Vue.createApp({
             });
         },
         loadStandards: function () {
-            fetch("/city_standards").then((response) => {
+            fetch("http://localhost:8080/city_standards").then((response) => {
                 if (response.status == 200) {
                     response.json().then((standardsFromServer) => {
                         console.log("Received city standards from API:", standardsFromServer);
